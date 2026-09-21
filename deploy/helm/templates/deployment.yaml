@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vguard.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "vguard.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "vguard.name" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "vguard.name" . }}
+    spec:
+      containers:
+        - name: vguard
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["web"]
+          ports:
+            - containerPort: 9191
+              name: console
+          env:
+            - name: VGUARD_CENTROID
+              value: {{ .Values.config.centroid | quote }}
+            - name: VGUARD_DISTANCE_THRESHOLD
+              value: {{ .Values.config.distanceThreshold | quote }}
+            - name: VGUARD_MODE
+              value: {{ .Values.config.mode | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: audit
+              mountPath: /opt/vguard/data
+      volumes:
+        - name: audit
+          persistentVolumeClaim:
+            claimName: {{ include "vguard.fullname" . }}-audit
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vguard.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "vguard.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app.kubernetes.io/name: {{ include "vguard.name" . }}
+  ports:
+    - name: proxy
+      port: {{ .Values.service.proxyPort }}
+      targetPort: 9190
+    - name: console
+      port: {{ .Values.service.webPort }}
+      targetPort: 9191
+---
+{{- if .Values.auditStorage }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "vguard.fullname" . }}-audit
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.auditStorage.size }}
+{{- end }}

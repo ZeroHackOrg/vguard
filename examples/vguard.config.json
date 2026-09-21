@@ -1,0 +1,13 @@
+{
+  "centroid": [0.1, 0.4, 0.9],
+  "distance_threshold": 2.0,
+  "min_cosine": 0.85,
+  "rate_limit_rpm": 120,
+  "rate_limit_budget": 1000000.0,
+  "audit_path": "data/vguard_audit.jsonl",
+  "audit_retention_days": 90,
+  "proxy_host": "0.0.0.0",
+  "proxy_port": 9190,
+  "web_port": 9191,
+  "mode": "inline"
+}

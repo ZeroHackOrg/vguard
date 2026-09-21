@@ -1,0 +1,17 @@
+services:
+  vguard:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "9190:9190"
+      - "9191:9191"
+    environment:
+      VGUARD_MODE: "inline"
+      VGUARD_DISTANCE_THRESHOLD: "2.0"
+      VGUARD_CENTROID: "[0.1, 0.4, 0.9]"
+    volumes:
+      - vguard_audit:/opt/vguard/data
+
+volumes:
+  vguard_audit:

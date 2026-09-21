@@ -1,0 +1,27 @@
+replicaCount: 2
+
+image:
+  repository: zerohackorg/vguard
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  proxyPort: 9190
+  webPort: 9191
+
+config:
+  centroid: "[0.1, 0.4, 0.9]"
+  distanceThreshold: "2.0"
+  mode: "inline"
+
+auditStorage:
+  size: 1Gi
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

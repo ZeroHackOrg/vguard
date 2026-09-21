@@ -1,0 +1,15 @@
+apiVersion: v2
+name: vguard
+description: Zero-Trust Spatial Firewall & Anomaly Proxy for Vector Databases
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - vector-database
+  - security
+  - rag
+  - embeddings
+home: https://zerohack.org
+maintainers:
+  - name: ZeroHack.org
+    email: solutions@zerohack.org

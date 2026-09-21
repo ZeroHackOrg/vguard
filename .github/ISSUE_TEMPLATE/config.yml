@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ZeroHack.org
+    url: https://zerohack.org
+    about: Commercial enterprise licensing and consulting.
+  - name: Security
+    url: mailto:solutions@zerohack.org
+    about: Report vulnerabilities privately.
